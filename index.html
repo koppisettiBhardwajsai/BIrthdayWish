@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Surprise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Londrina+Sketch&family=Pacifico&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playwrite+IE+Guides&family=Protest+Strike&family=Roboto:ital,wght@0,100..900;1,100..900&family=Sixtyfour&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pacifico', cursive;
+            background: linear-gradient(135deg, #ff6b8a, #4ecdc4, #45b7d1);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .page {
+            display: none;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            position: relative;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+       
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+       
+        .page1-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            z-index: 2;
+            max-width: 90%;
+            width: 400px;
+        }
+
+        .page1-content h1 {
+            color: #ff6b8a;
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-container {
+            margin-bottom: 30px;
+        }
+
+        #nameInput {
+            width: 100%;
+            padding: 15px 20px;
+            border: 3px solid #ff6b8a;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-family: 'Pacifico', cursive;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #nameInput:focus {
+            border-color: #4ecdc4;
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(255, 107, 138, 0.3);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b8a, #4ecdc4);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-family: 'Pacifico', cursive;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+       
+        .page2-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            z-index: 2;
+        }
+
+        .name-display {
+            font-size: clamp(2rem, 6vw, 4rem);
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(-50px);
+            animation: slideInDown 1s ease-out 0.5s forwards;
+        }
+
+        @keyframes slideInDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .circle-container {
+            width: min(350px, 80vw);
+            height: min(350px, 80vw);
+            border-radius: 50%;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: 5px solid rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+        }
+
+        .circle-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .circle-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .overlay-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ff6b8a;
+            font-size: 1.5rem;
+            font-weight: bold;
+            pointer-events: none;
+            text-align: center;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+       
+        .page3-content {
+            text-align: center;
+            z-index: 2;
+        }
+
+        .page3-content h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+            margin-bottom: 30px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .cake-container {
+            position: relative;
+            margin: 40px auto;
+        }
+
+        .cake {
+            width: min(300px, 80vw);
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease-in-out;
+        }
+
+        .knife {
+            width: min(100px, 20vw);
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-45deg);
+            transition: all 0.8s ease-in-out;
+            cursor: pointer;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+        }
+
+        .knife:hover {
+            transform: translateX(-50%) rotate(-45deg) scale(1.1);
+        }
+
+       
+        .greeting-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            max-width: 90%;
+            width: 500px;
+            z-index: 2;
+            animation: cardPop 1s ease-out;
+        }
+
+        @keyframes cardPop {
+            0% { transform: scale(0) rotate(180deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .greeting-card h1 {
+            color: #ff6b8a;
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 20px;
+        }
+
+        .greeting-card p {
+            color: #666;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .balloons-img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+
+        @media (max-width: 768px) {
+            .page {
+                padding: 10px;
+            }
+
+            .page1-content {
+                padding: 30px 20px;
+            }
+
+            .page2-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .name-display {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .circle-container {
+                margin-bottom: 20px;
+            }
+
+            .cake-container {
+                margin: 20px auto;
+            }
+
+            .greeting-card {
+                padding: 30px 20px;
+            }
+        }
+
+       
+        @media (max-width: 480px) {
+            .page1-content {
+                padding: 20px 15px;
+            }
+
+            .btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+
+            .circle-container {
+                width: min(280px, 90vw);
+                height: min(280px, 90vw);
+            }
+
+            .overlay-text {
+                font-size: 1.2rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div class="particles" id="particles"></div>
+
+    
+    <div id="page1" class="page active">
+        <div class="page1-content">
+            <h1>🎉 Birthday Surprise! 🎉</h1>
+            <div class="input-container">
+                <input type="text" id="nameInput" placeholder="Enter your name" maxlength="21">
+            </div>
+            <button class="btn" onclick="playmusic()" style="margin-bottom: 8px;">🎶Play Birthday Song🎶</button>
+            <button class="btn" onclick="goToImageUpload()">Let's Celebrate!</button>
+        </div>
+    </div>
+
+    
+    <div id="page2" class="page">
+        <div class="page2-container">
+            <div class="name-display" id="nameDisplay"></div>
+            <div class="circle-container" onclick="document.getElementById('fileInput').click()">
+                <span class="overlay-text">📸 Add Your Photo</span>
+                <img id="preview" src="" alt="" style="display: none;">
+            </div>
+            <input type="file" id="fileInput" accept="image/*" onchange="loadImage(event)">
+            <button class="btn" onclick="goToCake()" style="display: none;" id="nextBtn">Cut the Cake! 🎂</button>
+        </div>
+    </div>
+
+    
+    <div id="page3" class="page">
+        <div class="page3-content">
+            <h1 id="cakeText">🎂 Time to Cut the Cake! 🎂</h1>
+            <div class="cake-container">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='cake-gradient' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23D2691E'/%3E%3Cstop offset='50%25' style='stop-color:%23F4A460'/%3E%3Cstop offset='100%25' style='stop-color:%23DEB887'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='50' y='120' width='300' height='150' fill='url(%23cake-gradient)' rx='10'/%3E%3Crect x='70' y='100' width='260' height='30' fill='%23FF69B4' rx='15'/%3E%3Crect x='90' y='80' width='220' height='30' fill='%23FFB6C1' rx='15'/%3E%3Ccircle cx='150' cy='65' r='8' fill='%23FF0000'/%3E%3Ccircle cx='200' cy='65' r='8' fill='%23FF0000'/%3E%3Ccircle cx='250' cy='65' r='8' fill='%23FF0000'/%3E%3Cline x1='150' y1='45' x2='150' y2='65' stroke='%23FFD700' stroke-width='3'/%3E%3Cline x1='200' y1='45' x2='200' y2='65' stroke='%23FFD700' stroke-width='3'/%3E%3Cline x1='250' y1='45' x2='250' y2='65' stroke='%23FFD700' stroke-width='3'/%3E%3Cellipse cx='150' cy='40' rx='8' ry='15' fill='%23FFA500'/%3E%3Cellipse cx='200' cy='40' rx='8' ry='15' fill='%23FFA500'/%3E%3Cellipse cx='250' cy='40' rx='8' ry='15' fill='%23FFA500'/%3E%3C/svg%3E" alt="Birthday Cake" class="cake" id="cake">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 200'%3E%3Cpath d='M20 10 L80 10 L85 180 L15 180 Z' fill='%23C0C0C0'/%3E%3Cpath d='M15 180 L85 180 L80 190 L20 190 Z' fill='%23A0A0A0'/%3E%3C/svg%3E" alt="Knife" class="knife" id="knife" onclick="cutCake()">
+            </div>
+            <p style="color: white; font-size: 1.2rem; margin-top: 20px;">Click the knife to cut the cake! ✨</p>
+        </div>
+    </div>
+
+    
+    <div id="page4" class="page">
+        <div class="greeting-card">
+            <h1>🎉 Happy Birthday! 🎉</h1>
+            <p>May your special day be filled with happiness, laughter, and wonderful memories!</p>
+            <p>Wishing you all the joy your heart can hold! 🎂✨</p>
+            <p>Happy Birthday Potti🏠☣️♈</p>
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Cdefs%3E%3ClinearGradient id='balloon1' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FF69B4'/%3E%3Cstop offset='100%25' style='stop-color:%23FF1493'/%3E%3C/linearGradient%3E%3ClinearGradient id='balloon2' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%234ECDC4'/%3E%3Cstop offset='100%25' style='stop-color:%2320B2AA'/%3E%3C/linearGradient%3E%3ClinearGradient id='balloon3' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FFD700'/%3E%3Cstop offset='100%25' style='stop-color:%23FFA500'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cellipse cx='80' cy='60' rx='25' ry='35' fill='url(%23balloon1)'/%3E%3Cellipse cx='150' cy='50' rx='25' ry='35' fill='url(%23balloon2)'/%3E%3Cellipse cx='220' cy='65' rx='25' ry='35' fill='url(%23balloon3)'/%3E%3Cline x1='80' y1='95' x2='80' y2='150' stroke='%23333' stroke-width='2'/%3E%3Cline x1='150' y1='85' x2='150' y2='140' stroke='%23333' stroke-width='2'/%3E%3Cline x1='220' y1='100' x2='220' y2='155' stroke='%23333' stroke-width='2'/%3E%3C/svg%3E" alt="Balloons" class="balloons-img">
+            <br><br>
+            <button class="btn" onclick="restartCelebration()">Celebrate Again! 🎊</button>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 10 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particles.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        function goToImageUpload() {
+            const name = document.getElementById('nameInput').value.trim();
+            if (!name) {
+                alert('Please enter your name first! 🎈');
+                return;
+            }
+            
+            document.getElementById('nameDisplay').textContent = `Happy Birthday, ${name}! 🎂`;
+            switchPage('page1', 'page2');
+        }
+
+        function playmusic() {
+            const audio = new Audio('Lohitha.mp3');
+            audio.loop = true;
+            audio.play();
+        }
+
+        function loadImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    document.querySelector('.overlay-text').style.display = 'none';
+                    document.getElementById('nextBtn').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function goToCake() {
+            const name = document.getElementById('nameInput').value.trim();
+            document.getElementById('cakeText').textContent = `🎂 ${name}, Time to Cut the Cake! 🎂`;
+            switchPage('page2', 'page3');
+        }
+
+        function cutCake() {
+            const knife = document.getElementById('knife');
+            const cake = document.getElementById('cake');
+            
+            knife.style.top = '150px';
+            knife.style.transform = 'translateX(-50%) rotate(0deg)';
+            cake.style.transform = 'scale(0.9) rotate(5deg)';
+            
+            setTimeout(() => {
+                switchPage('page3', 'page4');
+            }, 1000);
+        }
+
+        function switchPage(fromPage, toPage) {
+            document.getElementById(fromPage).classList.remove('active');
+            document.getElementById(toPage).classList.add('active');
+        }
+
+        function restartCelebration() {
+            document.getElementById('nameInput').value = '';
+            document.getElementById('preview').style.display = 'none';
+            document.getElementById('preview').src = '';
+            document.querySelector('.overlay-text').style.display = 'block';
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('knife').style.top = '-60px';
+            document.getElementById('knife').style.transform = 'translateX(-50%) rotate(-45deg)';
+            document.getElementById('cake').style.transform = 'scale(1) rotate(0deg)';
+            
+            switchPage('page4', 'page1');
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach((particle, index) => {
+                const speed = (index % 5 + 1) * 0.01;
+                const x = (e.clientX * speed) % window.innerWidth;
+                const y = (e.clientY * speed) % window.innerHeight;
+                particle.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+            });
+        });
+
+        document.getElementById('nameInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                goToImageUpload();
+            }
+        });
+    </script>
+</body>
+</html>
